@@ -4,8 +4,60 @@
 		"selected_items":
 		[
 			[
+				"ma",
+				"match_fk"
+			],
+			[
+				"all",
+				"alliance_color"
+			],
+			[
+				"pmtd",
+				"PerMatchTeamData"
+			],
+			[
+				"messa",
+				"message_body"
+			],
+			[
+				"mess",
+				"message_body"
+			],
+			[
+				"exce",
+				"execute"
+			],
+			[
+				"user",
+				"userId"
+			],
+			[
+				"o",
+				"oauth2client"
+			],
+			[
+				"gma",
+				"gmail_service"
+			],
+			[
+				"mes",
+				"messages"
+			],
+			[
+				"matc",
+				"match_number"
+			],
+			[
+				"Fo",
+				"ForeignKey"
+			],
+			[
 				"Ch",
-				"ChoiceInLine"
+				"CharField"
+			],
+			[
+				"get",
+				"get_object_or_404"
 			],
 			[
 				"pub",
@@ -28,34 +80,35 @@
 			}
 		},
 		{
-			"file": "DjangoScoutingApp/settings.py",
-			"settings":
-			{
-				"buffer_size": 2164,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "scoutingData/models.py",
-			"settings":
-			{
-				"buffer_size": 633,
-				"line_ending": "Unix"
-			}
-		},
-		{
 			"file": "scoutingData/views.py",
 			"settings":
 			{
-				"buffer_size": 550,
+				"buffer_size": 3277,
 				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "scoutingData/management/commands/fetchtexts.py",
+			"settings":
+			{
+				"buffer_size": 3308,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "scoutingData/templates/scoutingData/results.html",
+			"settings":
+			{
+				"buffer_size": 270,
+				"line_ending": "Unix",
+				"name": "<h1>{{ question.question_text }}</h1>"
 			}
 		},
 		{
 			"file": "scoutingData/urls.py",
 			"settings":
 			{
-				"buffer_size": 427,
+				"buffer_size": 451,
 				"line_ending": "Unix",
 				"name": "from django.conf.urls import patterns, url"
 			}
@@ -64,7 +117,39 @@
 			"file": "DjangoScoutingApp/urls.py",
 			"settings":
 			{
-				"buffer_size": 343,
+				"buffer_size": 369,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "scoutingData/templates/scoutingData/index.html",
+			"settings":
+			{
+				"buffer_size": 369,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/Applications/AMPPS/www/scouting-app/quickstart.py",
+			"settings":
+			{
+				"buffer_size": 1507,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "scoutingData/models.py",
+			"settings":
+			{
+				"buffer_size": 2420,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "scoutingData/templates/scoutingData/detail.html",
+			"settings":
+			{
+				"buffer_size": 489,
 				"line_ending": "Unix"
 			}
 		}
@@ -80,7 +165,7 @@
 	},
 	"console":
 	{
-		"height": 0.0
+		"height": 125.0
 	},
 	"distraction_free":
 	{
@@ -93,18 +178,28 @@
 	},
 	"file_history":
 	[
-		"/Users/User/Eclipse Projects/DjangoScoutingApp/templates/admin/base_site.html",
+		"/Users/User/Eclipse Projects/DjangoScoutingApp/scoutingData/test.html",
+		"/Users/User/Eclipse Projects/DjangoScoutingApp/scoutingData/__init__.py",
+		"/Users/User/Eclipse Projects/DjangoScoutingApp/scoutingData/management/commands/_private.py",
+		"/Users/User/Eclipse Projects/DjangoScoutingApp/scoutingData/management/commands/__init__.py",
+		"/Users/User/Eclipse Projects/DjangoScoutingApp/scoutingData/management/__init__.py",
+		"/Users/User/Eclipse Projects/DjangoScoutingApp/scoutingData/tests.py",
+		"/Users/User/Eclipse Projects/DjangoScoutingApp/scoutingData/static/scoutingData/style.css",
+		"/Users/User/Library/Application Support/Sublime Text 2/Packages/Default/Preferences.sublime-settings",
+		"/Users/User/Library/Application Support/Sublime Text 2/Packages/User/Preferences.sublime-settings",
 		"/Users/User/Eclipse Projects/DjangoScoutingApp/DjangoScoutingApp/settings.py",
-		"/Users/User/Eclipse Projects/DjangoScoutingApp/scoutingData/models.py",
-		"/Users/User/Library/Application Support/Sublime Text 2/Packages/Default/Preferences.sublime-settings"
+		"/Users/User/Eclipse Projects/DjangoScoutingApp/scoutingData/templates/scoutingData/detail.html",
+		"/Users/User/Eclipse Projects/DjangoScoutingApp/scoutingData/templates/scoutingData/index.html",
+		"/Users/User/Eclipse Projects/DjangoScoutingApp/templates/admin/base_site.html",
+		"/Users/User/Eclipse Projects/DjangoScoutingApp/scoutingData/models.py"
 	],
 	"find":
 	{
-		"height": 0.0
+		"height": 35.0
 	},
 	"find_in_files":
 	{
-		"height": 0.0,
+		"height": 93.0,
 		"where_history":
 		[
 		]
@@ -114,6 +209,7 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"polls"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -131,7 +227,7 @@
 	"groups":
 	[
 		{
-			"selected": 4,
+			"selected": 2,
 			"sheets":
 			[
 				{
@@ -162,38 +258,10 @@
 				},
 				{
 					"buffer": 1,
-					"file": "DjangoScoutingApp/settings.py",
+					"file": "scoutingData/views.py",
 					"settings":
 					{
-						"buffer_size": 2164,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1734,
-								1734
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Python/Python.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 522.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "scoutingData/models.py",
-					"settings":
-					{
-						"buffer_size": 633,
+						"buffer_size": 3277,
 						"regions":
 						{
 						},
@@ -217,24 +285,53 @@
 					"type": "text"
 				},
 				{
-					"buffer": 3,
-					"file": "scoutingData/views.py",
+					"buffer": 2,
+					"file": "scoutingData/management/commands/fetchtexts.py",
 					"settings":
 					{
-						"buffer_size": 550,
+						"buffer_size": 3308,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								549,
-								549
+								1455,
+								1455
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/Python/Python.tmLanguage"
+							"auto_name": "",
+							"syntax": "Packages/Djaneiro/Syntaxes/Python Django.tmLanguage",
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 129.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "scoutingData/templates/scoutingData/results.html",
+					"settings":
+					{
+						"buffer_size": 270,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								270,
+								270
+							]
+						],
+						"settings":
+						{
+							"auto_name": "<h1>{{ question.question_text }}</h1>",
+							"syntax": "Packages/HTML/HTML.tmLanguage"
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
@@ -247,15 +344,15 @@
 					"file": "scoutingData/urls.py",
 					"settings":
 					{
-						"buffer_size": 427,
+						"buffer_size": 451,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								422,
-								422
+								431,
+								431
 							]
 						],
 						"settings":
@@ -274,20 +371,132 @@
 					"file": "DjangoScoutingApp/urls.py",
 					"settings":
 					{
-						"buffer_size": 343,
+						"buffer_size": 369,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								293,
-								293
+								315,
+								315
 							]
 						],
 						"settings":
 						{
 							"syntax": "Packages/Python/Python.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "scoutingData/templates/scoutingData/index.html",
+					"settings":
+					{
+						"buffer_size": 369,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								92,
+								92
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				}
+			]
+		},
+		{
+			"selected": 1,
+			"sheets":
+			[
+				{
+					"buffer": 7,
+					"file": "/Applications/AMPPS/www/scouting-app/quickstart.py",
+					"settings":
+					{
+						"buffer_size": 1507,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								830,
+								830
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Djaneiro/Syntaxes/Python Django.tmLanguage"
+						},
+						"translation.x": 111.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "scoutingData/models.py",
+					"settings":
+					{
+						"buffer_size": 2420,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2418,
+								2418
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 157.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 9,
+					"file": "scoutingData/templates/scoutingData/detail.html",
+					"settings":
+					{
+						"buffer_size": 489,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								151,
+								151
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage"
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
@@ -304,7 +513,7 @@
 	},
 	"input":
 	{
-		"height": 0.0
+		"height": 31.0
 	},
 	"layout":
 	{
@@ -315,11 +524,18 @@
 				0,
 				1,
 				1
+			],
+			[
+				1,
+				0,
+				2,
+				1
 			]
 		],
 		"cols":
 		[
 			0.0,
+			0.552079210807,
 			1.0
 		],
 		"rows":
@@ -329,6 +545,10 @@
 		]
 	},
 	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 100.0
+	},
 	"replace":
 	{
 		"height": 0.0
@@ -354,10 +574,10 @@
 		],
 		"width": 0.0
 	},
-	"show_minimap": true,
+	"show_minimap": false,
 	"show_open_files": true,
 	"show_tabs": true,
-	"side_bar_visible": true,
+	"side_bar_visible": false,
 	"side_bar_width": 222.0,
 	"status_bar_visible": true
 }
