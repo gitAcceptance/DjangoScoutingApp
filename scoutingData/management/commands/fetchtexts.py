@@ -1,4 +1,6 @@
 import re
+import argparse
+import pprint
 
 import httplib2
 from apiclient.discovery import build
@@ -8,22 +10,24 @@ from oauth2client.file import Storage
 from oauth2client.tools import run_flow
 
 from django.core.management.base import BaseCommand, CommandError
-from scoutingData.models import PerMatchTeamData, Match
+from scoutingData.models import Message, PerMatchTeamData, Match, Team
 
 class Command(BaseCommand):
     help = 'Updates the database with scouting data from text messages'
+    output_transaction = True # I think I want this set to true
 
-    def parse_email(message_body):
+    def parse_email_then_save_data(message_body):
         # expecting "Match:<match_number> Team:<team_number> Alliance:<alliance_color> Kills:<kills> Deaths:<deaths> Assists:<assists>"
         tokens = re.search(r'Match:(\I+) Team:(\I+) Alliance:(\w+) Kills:(\I+) Deaths:(\I+) Assists:(\I+)', message_body)
-        orgs = Match.objects.get(match_number__exact=tokens.group(1))
-        pmtd = PerMatchTeamData(team= tokens.group(2))
-        if orgs:
-            pmtd.match_fk = orgs
+        preexisting_match = Match.objects.get(match_number__exact=tokens.group(1))
+        
+        if preexisting_match:
+            pmtd = PerMatchTeamData(match_fk=preexisting_match, team=tokens.group(2))
+            #pmtd.match_fk = orgs
         else:
             m = Match(match_number=tokens.group(1))
             m.save()
-        pmtd = PerMatchTeamData(match_fk= m, team= tokens.group(2))
+            pmtd = PerMatchTeamData(match_fk= m, team= tokens.group(2))
         if tokens.group(3) == 'red':
             pmtd.alliance_color = 'red'
         else:
@@ -31,6 +35,8 @@ class Command(BaseCommand):
         pmtd.kills = tokens.group(4)
         pmtd.deaths = tokens.group(5)
         pmtd.assists = tokens.group(6)
+        pmtd.save()
+        # TODO make sure this works
 
 
 
@@ -68,15 +74,41 @@ class Command(BaseCommand):
         # Retrieve a page of messages
         messages = gmail_service.users().messages().list(userId='me').execute()
 
-        match_data_list = new list
-        
+        # match_data_list
+
 
         if messages['messages']:
             for message in messages['messages']:
                 #self.stdout.write('Message ID: %s' % (message['id']))
-                self.stdout.write('Message ID: %s' % (message['id']))
                 messageObject = gmail_service.users().messages().get(id=message['id'], userId='me').execute()
-                self.stdout.write(messageObject['snippet'])
+                """
+                self.stdout.write("\n\n\n")
+                pp = pprint.PrettyPrinter(indent=2)
+                if pp.isrecursive(messageObject):
+                    pp.pprint(messageObject)
+                else:
+                    stringy = pp.pformat(messageObject)
+                    self.stdout.write(stringy)
+                #self.stdout.write(message)
+                self.stdout.write("\n\n\n")
+                """
+
+                #headers = messageObject['payload']['headers']
+                for dicts in messageObject['payload']['headers']:
+                    if dicts['name']=='Subject':
+                        phone_num = dicts['value']
+
+                # this will store some info about the gmail message just in case
+                gmailMessage = Message(
+                    gmail_message_id=message['id'],
+                    sender_phone_number=phone_num,
+                    message_body=messageObject['snippet']
+                )
+                self.stdout.write("\n\n")
+                self.stdout.write(gmailMessage.gmail_message_id)
+                self.stdout.write(gmailMessage.sender_phone_number)
+                self.stdout.write(gmailMessage.message_body)
+                # parse_email_then_save_data(messageObject['snippet'])
         
         #self.stdout.write('My first django command!')
 
