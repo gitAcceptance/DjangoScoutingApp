@@ -23,41 +23,16 @@ class IndexView(generic.ListView):
         ).order_by('-pub_date')[:5]
 
 class DataListView(generic.ListView):
-    model = Match
+    #model = Match
     template_name = 'scoutingData/index.html'
     context_object_name = 'latest_question_list'
 
     # this gmail code doesn't belong here
     def get_queryset(self):
-        # Path to the client_secret.json file downloaded from the Developer Console
-        CLIENT_SECRET_FILE = 'client_secret.json'
+        # meh
+        return 5
 
-        # Check https://developers.google.com/gmail/api/auth/scopes for all available scopes
-        OAUTH_SCOPE = 'https://www.googleapis.com/auth/gmail.readonly'
 
-        # Location of the credentials storage file
-        STORAGE = Storage('gmail.storage')
-
-        # Start the OAuth flow to retrieve credentials
-        flow = flow_from_clientsecrets(CLIENT_SECRET_FILE, scope=OAUTH_SCOPE)
-        http = httplib2.Http()
-
-        # Try to retrieve credentials from storage or run the flow to generate them
-        credentials = STORAGE.get()
-        if credentials is None or credentials.invalid:
-          credentials = run(flow, STORAGE, http=http)
-
-        # Authorize the httplib2.Http object with our credentials
-        http = credentials.authorize(http)
-
-        # Build the Gmail service from discovery
-        gmail_service = build('gmail', 'v1', http=http)
-
-        # Retrieve a page of messages
-        messages = gmail_service.users().messages().list(userId='me').execute()
-
-        
-            
 
 class DetailView(generic.DetailView):
     model = Question

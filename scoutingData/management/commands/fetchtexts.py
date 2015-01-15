@@ -10,23 +10,48 @@ from oauth2client.file import Storage
 from oauth2client.tools import run_flow
 
 from django.core.management.base import BaseCommand, CommandError
+from django.core.exceptions import ObjectDoesNotExist
 from scoutingData.models import Message, PerMatchTeamData, Match, Team
 
 class Command(BaseCommand):
     help = 'Updates the database with scouting data from text messages'
     output_transaction = True # I think I want this set to true
 
-    def parse_email_then_save_data(message_body):
+    def parse_email_then_save_data(self, message_body, gmail_id):
         # expecting "Match:<match_number> Team:<team_number> Alliance:<alliance_color> Kills:<kills> Deaths:<deaths> Assists:<assists>"
-        tokens = re.search(r'Match:(\I+) Team:(\I+) Alliance:(\w+) Kills:(\I+) Deaths:(\I+) Assists:(\I+)', message_body)
-        preexisting_match = Match.objects.get(match_number__exact=tokens.group(1))
-        
+        tokens = re.search(r'Match:([\d]*) Team:([\d]*) Alliance:([\w]*) Kills:([\d]*) Deaths:([\d]*) Assists:([\d]*)', message_body)
+        if tokens:
+            """
+            self.stdout.write(tokens.group(1))
+            self.stdout.write(tokens.group(2))
+            self.stdout.write(tokens.group(3))
+            self.stdout.write(tokens.group(4))
+            self.stdout.write(tokens.group(5))
+            self.stdout.write(tokens.group(6))
+            """
+            try:
+                preexisting_match = Match.objects.get(match_number__exact=tokens.group(1))
+            except ObjectDoesNotExist:
+                m = Match(match_number=tokens.group(1))
+                m.save()
+                self.stdout.write("Created a new match:\n    %s" % (m))
+        else:
+            self.stdout.write("Could not parse info from text")
+            return
+
+        if tokens.group(6):
+            self.stdout.write("yeah it's good")
+        else:
+            self.stdout.write("Submission was not formatted correctly")
+            return
+
         if preexisting_match:
             pmtd = PerMatchTeamData(match_fk=preexisting_match, team=tokens.group(2))
-            #pmtd.match_fk = orgs
+            match_data = PerMatchTeamData.objects.filter(team=tokens.group(2)).filter(match_fk_id=tokens.group(1))
+            if match_data:
+                self.stdout.write("PerMatchTeamData for this submission already exists!")
+                return
         else:
-            m = Match(match_number=tokens.group(1))
-            m.save()
             pmtd = PerMatchTeamData(match_fk= m, team= tokens.group(2))
         if tokens.group(3) == 'red':
             pmtd.alliance_color = 'red'
@@ -35,7 +60,13 @@ class Command(BaseCommand):
         pmtd.kills = tokens.group(4)
         pmtd.deaths = tokens.group(5)
         pmtd.assists = tokens.group(6)
+        pmtd.source_mail_id = gmail_id
         pmtd.save()
+        
+        """
+        I will need to take the match object and manually look through and populate
+        the alliance members.
+        """
         # TODO make sure this works
 
 
@@ -81,7 +112,7 @@ class Command(BaseCommand):
             for message in messages['messages']:
                 #self.stdout.write('Message ID: %s' % (message['id']))
                 messageObject = gmail_service.users().messages().get(id=message['id'], userId='me').execute()
-                """
+                """ Trying to see what's inside the gmail message
                 self.stdout.write("\n\n\n")
                 pp = pprint.PrettyPrinter(indent=2)
                 if pp.isrecursive(messageObject):
@@ -92,23 +123,37 @@ class Command(BaseCommand):
                 #self.stdout.write(message)
                 self.stdout.write("\n\n\n")
                 """
-
+                self.stdout.write("\n\n")
                 #headers = messageObject['payload']['headers']
                 for dicts in messageObject['payload']['headers']:
                     if dicts['name']=='Subject':
-                        phone_num = dicts['value']
+                        phone_num_raw = dicts['value']
 
+                p = re.compile('\d+')
+                phone_token = p.findall(phone_num_raw)
+                #phone_token = re.search('SMS from \(([\d]*)\) ([\d]*)-([\d]*) ', phone_num_raw)
+                if phone_token:
+                    #self.stdout.write("My re.findall() results: %s" % (phone_token))
+                    phone_num = "%s%s%s" % (phone_token[0], phone_token[1], phone_token[2])
+                    #self.stdout.write(phone_num)
+
+                else:
+                    self.stdout.write("oops I can't regex")
                 # this will store some info about the gmail message just in case
+                
                 gmailMessage = Message(
                     gmail_message_id=message['id'],
                     sender_phone_number=phone_num,
                     message_body=messageObject['snippet']
                 )
-                self.stdout.write("\n\n")
+                gmailMessage.save()
+                
                 self.stdout.write(gmailMessage.gmail_message_id)
                 self.stdout.write(gmailMessage.sender_phone_number)
                 self.stdout.write(gmailMessage.message_body)
-                # parse_email_then_save_data(messageObject['snippet'])
+                # message_string = messageObject['snippet']
+                self.parse_email_then_save_data(gmailMessage.message_body, message['id'])
+                
         
         #self.stdout.write('My first django command!')
 

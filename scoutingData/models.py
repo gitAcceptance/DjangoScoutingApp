@@ -26,7 +26,7 @@ class Choice(models.Model):
     	return self.choice_text
 
 class Message(models.Model):
-    gmail_message_id = models.BigIntegerField(default=0)
+    gmail_message_id = models.CharField(max_length=64, primary_key=True)
     sender_phone_number = models.IntegerField(default=9999999999)
     message_body = models.CharField(max_length=256)
 
@@ -47,8 +47,12 @@ class PerMatchTeamData(models.Model):
     assists = models.IntegerField(default=0)
     is_from_google_voice = models.BooleanField(default=True)
 
+    class Meta:
+        verbose_name = "PerMatchTeamData"
+        verbose_name_plural = "PerMatchTeamData"
+
     def __str__(self):
-        return "Team: %d, Match Number: %d" % (team_number, match.match_number)
+        return "Match Number: %d, Team Number: %d" % (self.match_fk.match_number, self.team)
 
     def get_absolute_url(self):
         from django.core.urlresolvers import reverse
@@ -57,12 +61,18 @@ class PerMatchTeamData(models.Model):
 
 class Match(models.Model):
     match_number = models.IntegerField(primary_key = True)
-    red_alliance_team_1 = models.ForeignKey(PerMatchTeamData, related_name='+')
-    red_alliance_team_2 = models.ForeignKey(PerMatchTeamData, related_name='+')
-    red_alliance_team_3 = models.ForeignKey(PerMatchTeamData, related_name='+')
-    blue_alliance_team_1 = models.ForeignKey(PerMatchTeamData, related_name='+')
-    blue_alliance_team_2 = models.ForeignKey(PerMatchTeamData, related_name='+')
-    blue_alliance_team_3 = models.ForeignKey(PerMatchTeamData, related_name='+')
+    red_alliance_team_1 = models.ForeignKey(PerMatchTeamData, related_name='+', null=True)
+    red_alliance_team_2 = models.ForeignKey(PerMatchTeamData, related_name='+', null=True)
+    red_alliance_team_3 = models.ForeignKey(PerMatchTeamData, related_name='+', null=True)
+    blue_alliance_team_1 = models.ForeignKey(PerMatchTeamData, related_name='+', null=True)
+    blue_alliance_team_2 = models.ForeignKey(PerMatchTeamData, related_name='+', null=True)
+    blue_alliance_team_3 = models.ForeignKey(PerMatchTeamData, related_name='+', null=True)
+
+    class Meta:
+        verbose_name_plural = "Matches"
+
+    def __str__(self):
+        return "Match number: %d" % (self.match_number)
 
 class Team(models.Model):
     team_number = models.IntegerField(primary_key=True)
