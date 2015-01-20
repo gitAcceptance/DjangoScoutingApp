@@ -1,8 +1,12 @@
-body {
-	
+div, article, nav, header, footer {
+	display: block;
 }
 
 li a {
 	color: green;
 }
 
+section {
+	display: block;
+	background-color: green;
+}

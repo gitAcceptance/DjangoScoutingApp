@@ -76,5 +76,19 @@ class Match(models.Model):
 
 class Team(models.Model):
     team_number = models.IntegerField(primary_key=True)
+    time_of_last_submission = models.DateTimeField('Last Submission Time', auto_now=True)
+    avg_kills = models.IntegerField(default=0)
+    avg_deaths = models.IntegerField(default=0)
+    avg_assists = models.IntegerField(default=0)
     # I'll add some metrics to track here later.
+
+    def __str__(self):
+        return "Team number: %d" % (self.team_number)
+
+
+
+
+
+
+
 

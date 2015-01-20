@@ -4,23 +4,39 @@ from django.http import HttpResponseRedirect, Http404
 # from django.template import RequestContext, loader
 from django.core.urlresolvers import reverse
 from django.views import generic
+from django.views.generic import View
 from django.utils import timezone
-
-from scoutingData.models import Question, Choice
+from chartit import DataPool, Chart
+from scoutingData.models import Question, Choice, Team
+import scoutingData.graphs
 
 # Create your views here.
 
 class IndexView(generic.ListView):
+    model = Team
     template_name = 'scoutingData/index.html'
-    context_object_name = 'latest_question_list'
+    context_object_name = 'team_info_list'
+
 
     def get_queryset(self):
         """Return the last five published questions.
         (not inclusding the ones set to be published in the future)
         """
-        return Question.objects.filter(
-            pub_date__lte=timezone.now()
-        ).order_by('-pub_date')[:5]
+        return Team.objects.filter(
+            time_of_last_submission__lte=timezone.now()
+        ).order_by('-time_of_last_submission')[:4]
+
+
+class ShowcaseView(View):
+    template_name = 'scoutingData/showcase.html'
+    context_object_name = 'bigchart'
+
+    def make_charts(self):
+        for team in IndexView.get_queryset():
+            chart_list.append(team_chart_view(team.team_number))
+        return render_to_response({'bigchart': chart_list})
+
+
 
 class DataListView(generic.ListView):
     #model = Match

@@ -40,9 +40,9 @@ class Command(BaseCommand):
             return
 
         if tokens.group(6):
-            self.stdout.write("yeah it's good")
+            self.stdout.write("Submission format appears to be correct.")
         else:
-            self.stdout.write("Submission was not formatted correctly")
+            self.stdout.write("Submission was not formatted correctly.")
             return
 
         if preexisting_match:
@@ -131,7 +131,6 @@ class Command(BaseCommand):
 
                 p = re.compile('\d+')
                 phone_token = p.findall(phone_num_raw)
-                #phone_token = re.search('SMS from \(([\d]*)\) ([\d]*)-([\d]*) ', phone_num_raw)
                 if phone_token:
                     #self.stdout.write("My re.findall() results: %s" % (phone_token))
                     phone_num = "%s%s%s" % (phone_token[0], phone_token[1], phone_token[2])

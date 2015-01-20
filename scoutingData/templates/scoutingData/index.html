@@ -1,13 +1,32 @@
 {% load staticfiles %}
 
 <link rel="stylesheet" type="text/css" href="{% static 'scoutingData/style.css' %}" />
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="{% static 'scoutingData/highcharts.js' %}"></script>
 
-{% if latest_question_list %}
-	<ul>
-		{% for question in latest_question_list %}
-			<li><a href="{% url 'scoutingData:detail' question.id %}">{{ question.question_text }}</a></li>
+
+
+{% if team_info_list %}
+		{% for team in team_info_list %}
+			<section id="showcase">{{team.team_number}}</section>
 		{% endfor %}
-	</ul>
+<section id="showcase"></section>
 {% else %}
-	<p>No polls are available.</p>
+	<p>I dun goofed up the index template.</p>
 {% endif %}
+
+
+
+
+<!--
+<script type="text/javascript">
+$(document).ready(function() {
+	{% for Team in team_info_list %}
+		var sectionId = "team-{{Team.team_number}}-graph";
+		$(document).add("section").addClass(sectionId).text("sectionId: "+sectionId);
+	{% endfor %}
+
+});
+
+</script>
+-->
