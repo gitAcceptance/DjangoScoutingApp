@@ -4,13 +4,28 @@
 <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script type="text/javascript" src="{% static 'scoutingData/highcharts.js' %}"></script>
 
+<style type="text/css">
+	body, section ,article, header, footer, nav {
+		display: block;
+	}
 
+	.graph {
+		width: 48%;
+		height: 400px;
+		margin: 10px;
+		border: 1px solid black;
+		float: left;
+	}
+</style>
+
+
+<html>
 
 {% if team_info_list %}
 		{% for team in team_info_list %}
-			<section id="showcase">{{team.team_number}}</section>
+			<section id="team-{{team.team_number}}" class="graph"></section>
 		{% endfor %}
-<section id="showcase"></section>
+
 {% else %}
 	<p>I dun goofed up the index template.</p>
 {% endif %}
@@ -18,15 +33,62 @@
 
 
 
-<!--
+
 <script type="text/javascript">
+
+function generateChart(teamNumber) {
+	$('#team-'+teamNumber).highcharts({
+		chart: {
+			type: 'bar',
+			events: {
+				load: function(event) {
+					$(window).resize();
+				}
+			},
+			height: $('#graph').height(),
+			width: $('#graph').width(),
+		},
+		title: {
+			text: 'Team number: '+teamNumber
+		},
+		xAxis: {
+			categories: ['Average Kills', 'Average Deaths', 'Average Assists']
+		},
+		yAxis: {
+			title: {
+				text: 'yAxis label'
+			}
+		},
+		series: [{
+			name: 'test',
+			data: [1, 0, 4]
+		}]
+	});
+}
+
+
 $(document).ready(function() {
 	{% for Team in team_info_list %}
-		var sectionId = "team-{{Team.team_number}}-graph";
-		$(document).add("section").addClass(sectionId).text("sectionId: "+sectionId);
+		//var sectionId = "team-{{Team.team_number}}-graph";
+		generateChart('{{Team.team_number}}');
+		//var chart = $('#team-{{Team.team_number}}').highcharts();
+		//var width = $('#graph').width();
+		//var height = $('#graph').height();
+
+		//chart.setSize(width, height, false);
+		//$('#team-{{Team.team_number}}').text("sectionId: team-{{Team.team_number}}");
 	{% endfor %}
+
+	$(window).resize();
 
 });
 
+$(document).load(function() {
+	var width = $('#graph').width();
+	$('#graph').width(width);
+});
 </script>
--->
+
+
+
+</html>
