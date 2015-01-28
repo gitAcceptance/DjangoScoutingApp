@@ -6,9 +6,9 @@ from django.core.urlresolvers import reverse
 from django.views import generic
 from django.views.generic import View
 from django.utils import timezone
-from chartit import DataPool, Chart
+
 from scoutingData.models import Question, Choice, Team
-import scoutingData.graphs
+#import scoutingData.graphs
 
 # Create your views here.
 

@@ -36,7 +36,7 @@
 
 <script type="text/javascript">
 
-function generateChart(teamNumber) {
+function generateChart(teamNumber, avg_kills, avg_deaths, avg_assists) {
 	$('#team-'+teamNumber).highcharts({
 		chart: {
 			type: 'bar',
@@ -61,7 +61,7 @@ function generateChart(teamNumber) {
 		},
 		series: [{
 			name: 'test',
-			data: [1, 0, 4]
+			data: [avg_kills, avg_deaths, avg_assists]
 		}]
 	});
 }
@@ -70,11 +70,11 @@ function generateChart(teamNumber) {
 $(document).ready(function() {
 	{% for Team in team_info_list %}
 		//var sectionId = "team-{{Team.team_number}}-graph";
-		generateChart('{{Team.team_number}}');
+		generateChart('{{Team.team_number}}', '{{Team.avg_kills}}', '{{Team.avg_deaths}}', '{{Team.avg_assists}}');
 		//var chart = $('#team-{{Team.team_number}}').highcharts();
 		//var width = $('#graph').width();
 		//var height = $('#graph').height();
-
+		console.log("{{Team.team_number}}, {{Team.avg_kills}}, {{Team.avg_deaths}}, {{Team.avg_assists}}");
 		//chart.setSize(width, height, false);
 		//$('#team-{{Team.team_number}}').text("sectionId: team-{{Team.team_number}}");
 	{% endfor %}
