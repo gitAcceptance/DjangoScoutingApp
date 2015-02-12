@@ -36,7 +36,7 @@
 
 <script type="text/javascript">
 
-function generateChart(teamNumber, avg_kills, avg_deaths, avg_assists) {
+function generateChart(teamNumber, metricArray) {
 	$('#team-'+teamNumber).highcharts({
 		chart: {
 			type: 'bar',
@@ -61,7 +61,7 @@ function generateChart(teamNumber, avg_kills, avg_deaths, avg_assists) {
 		},
 		series: [{
 			name: 'test',
-			data: [avg_kills, avg_deaths, avg_assists]
+			data: metricArray,
 		}]
 	});
 }
@@ -70,11 +70,18 @@ function generateChart(teamNumber, avg_kills, avg_deaths, avg_assists) {
 $(document).ready(function() {
 	{% for Team in team_info_list %}
 		//var sectionId = "team-{{Team.team_number}}-graph";
-		generateChart('{{Team.team_number}}', '{{Team.avg_kills}}', '{{Team.avg_deaths}}', '{{Team.avg_assists}}');
+		var teamMetrics = [
+			parseInt('{{Team.avg_kills}}'),
+			parseInt('{{Team.avg_deaths}}'),
+			parseInt('{{Team.avg_assists}}')
+		];
+		generateChart('{{Team.team_number}}', teamMetrics);
 		//var chart = $('#team-{{Team.team_number}}').highcharts();
 		//var width = $('#graph').width();
 		//var height = $('#graph').height();
-		console.log("{{Team.team_number}}, {{Team.avg_kills}}, {{Team.avg_deaths}}, {{Team.avg_assists}}");
+		
+		//console.log("{{Team.team_number}}, {{Team.avg_kills}}, {{Team.avg_deaths}}, {{Team.avg_assists}}");
+		//console.log(teamMetrics);
 		//chart.setSize(width, height, false);
 		//$('#team-{{Team.team_number}}').text("sectionId: team-{{Team.team_number}}");
 	{% endfor %}
@@ -83,10 +90,10 @@ $(document).ready(function() {
 
 });
 
-$(document).load(function() {
-	var width = $('#graph').width();
-	$('#graph').width(width);
-});
+// $(document).load(function() {
+// 	var width = $('#graph').width();
+// 	$('#graph').width(width);
+// });
 </script>
 
 
