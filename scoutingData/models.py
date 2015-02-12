@@ -34,18 +34,46 @@ class Message(models.Model):
         return self.gmail_message_id
 
 class PerMatchTeamData(models.Model):
+    RED     = 'red'
+    BLUE    = 'blue'
+    RIGHT   = 'right'
+    LEFT    = 'left'
+    MIDDLE  = 'middle'
+    BAD     = 'bad'
+    GOOD    = 'good'
+    GREAT   = 'great'
     ALLIANCE_CHOICES = (
-            ('red', 'Red'),
-            ('blue', 'Blue'),
+        (RED, 'Red'),
+        (BLUE, 'Blue'),
     )
-    source_mail = models.ForeignKey(Message)
+    POSITION_CHOICES = (
+        (RIGHT, 'Right'),
+        (MIDDLE, 'Middle'),
+        (LEFT, 'Left'),
+    )
+    QUALITY_CHOICES = (
+        (BAD, 'Bad'),
+        (GOOD, 'Good'),
+        (GREAT, 'Great'),
+    )
+    date_last_changed = models.DateTimeField(auto_now=True)
+    source_mail = models.ForeignKey('Message')
+    is_from_google_voice = models.BooleanField(default=True)
     team = models.IntegerField(default=0)
     match_fk = models.ForeignKey('Match')
     alliance_color = models.CharField(choices=ALLIANCE_CHOICES, max_length=4)
-    kills = models.IntegerField(default=0)
-    deaths = models.IntegerField(default=0)
-    assists = models.IntegerField(default=0)
-    is_from_google_voice = models.BooleanField(default=True)
+    starting_position = models.CharField(choices=POSITION_CHOICES, max_length=6)
+    # autonomous period
+    has_autonomous = models.BooleanField(default=False)
+    auto_quality = models.CharField(choices=QUALITY_CHOICES, max_length=6, default=BAD)
+    # teleoperated period
+    totes_touched = models.IntegerField(default=0)
+    noodles_manipulated = models.IntegerField(default=0)
+    height_of_capped_stack = models.IntegerField(default=0)
+    attempted_coop = models.BooleanField(default=False)
+    completed_coop = models.BooleanField(default=False)
+    can_traverse_bump = models.BooleanField(default=False)
+
 
     class Meta:
         verbose_name = "PerMatchTeamData"
@@ -58,6 +86,10 @@ class PerMatchTeamData(models.Model):
         from django.core.urlresolvers import reverse
         return reverse('scoutingData.views.details', args=[str(self.id)])
 
+    def save(self, *args, **kwagrs):
+        # implement the saving of related entrys and recalulating team metrics
+
+        super(scoutingData, self).save(self, *args, **kwargs)
 
 class Match(models.Model):
     match_number = models.IntegerField(primary_key = True)
@@ -72,7 +104,7 @@ class Match(models.Model):
         verbose_name_plural = "Matches"
 
     def __str__(self):
-        return "Match number: %d" % (self.match_number)
+        return "Match number: %s" % (self.match_number)
 
 class Team(models.Model):
     team_number = models.IntegerField(primary_key=True)
@@ -81,6 +113,8 @@ class Team(models.Model):
     avg_deaths = models.IntegerField(default=0)
     avg_assists = models.IntegerField(default=0)
     # I'll add some metrics to track here later.
+    # Don't forget that any computed metrics might not be integers
+    # and as such won't like getting slotted into an Int field
 
     def __str__(self):
         return "Team number: %d" % (self.team_number)

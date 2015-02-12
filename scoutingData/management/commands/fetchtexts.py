@@ -19,7 +19,8 @@ class Command(BaseCommand):
 
     def parse_email_then_save_data(self, message_body, gmail_id):
         # expecting "Match:<match_number> Team:<team_number> Alliance:<alliance_color> Kills:<kills> Deaths:<deaths> Assists:<assists>"
-        tokens = re.search(r'Match:([\d]*) Team:([\d]*) Alliance:([\w]*) Kills:([\d]*) Deaths:([\d]*) Assists:([\d]*)', message_body)
+        # expecting "Match:<number> Team:<number> Alliance:<red/blue> StartPos:<L/M/R> Auto:<yes/no>:<bad/good/great> TotesTouched:<number> noodles:<number> CapStack:<number 1-6> tryCoop:<yes/no> doCoop:<yes/no> bump:<yes/no> "
+        tokens = re.search(r'Match:([\d]*) Team:([\d]*) Alliance:([\w]*) StartPos:([\w]) Auto:([\w]*):([\w]*) TotesTouched:([\d]*) Noodles:([\d]*) CapStack:([\d]) TryCoop([\w]*) DoCoop([\w]*) Bump:([\w]*)', message_body, re.IGNORECASE)     
         if tokens:
             """
             self.stdout.write(tokens.group(1))
